@@ -16,7 +16,7 @@ public class Autocomplete implements IAutocomplete {
 
     public boolean isWord(String w)  {
         for (char c : w.toCharArray()) {
-            if (!(Character.isLetter(c))) {
+            if ((!(Character.isLetter(c))) && (!(Character.isWhitespace(c)))) {
                 return false;
             }
         }
@@ -60,6 +60,7 @@ public class Autocomplete implements IAutocomplete {
 
     }
 
+    /*
     @Override
     public Node buildTrie(String filename, int k) {
 
@@ -113,6 +114,39 @@ public class Autocomplete implements IAutocomplete {
         }
 
         return this.root;
+    }
+
+     */
+
+
+    @Override
+    public Node buildTrie(String filename, int k) {
+
+        String line = "";
+        String splitBy = ",";
+        try {
+//parsing a CSV file into BufferedReader class constructor
+            BufferedReader br = new BufferedReader(new FileReader(filename));
+
+            br.readLine();
+
+            int i = 0;
+
+            while (((line = br.readLine()) != null) && i < k)   //returns a Boolean value
+            {
+                String[] city = line.split(splitBy);    // use comma as separator
+                //System.out.println("CityInfo [City Name=" + city[0] + ", State ID=" + city[1] + ", State Name=" + city[2] + ", lat=" + city[3] + ", lng= " + city[4] + ", Population= " + city[5] + "]");
+                String s = city[0];
+                Integer in = Integer.parseInt(city[5]);
+                addWord(s,in);
+                i += 1;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return this.root;
+
     }
 
     @Override
@@ -197,12 +231,12 @@ public class Autocomplete implements IAutocomplete {
             suggestionHelper(curr, toReturn);
         }
         if (!(toReturn.isEmpty())) {
-            Collections.sort(toReturn);
+            Collections.sort(toReturn, Collections.reverseOrder());
         }
 
         List<ITerm> last = new ArrayList<>();
 
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < toReturn.size(); i++) {
             last.add(toReturn.get(i));
         }
         return last;
