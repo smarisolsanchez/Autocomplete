@@ -1,5 +1,6 @@
 import org.junit.Test;
 import org.junit.Assert;
+import org.w3c.dom.Node;
 
 import java.awt.*;
 import java.io.*;
@@ -10,8 +11,6 @@ import java.util.List;
 public class AutocompleteTest {
     @Test
     public void testNewAutocomplete() {
-
-
 
     }
 
