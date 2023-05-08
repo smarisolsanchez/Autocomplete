@@ -1,6 +1,5 @@
 import org.junit.Test;
 import org.junit.Assert;
-import org.w3c.dom.Node;
 
 import java.awt.*;
 import java.io.*;
