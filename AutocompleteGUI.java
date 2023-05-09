@@ -20,23 +20,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.SwingUtilities;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JComponent;
-import javax.swing.JTextField;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.GroupLayout;
-import javax.swing.BorderFactory;
-import javax.swing.LayoutStyle;
-import javax.swing.KeyStroke;
-import javax.swing.ListSelectionModel;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.MouseInputAdapter;
@@ -118,11 +102,28 @@ public class AutocompleteGUI
 
         final boolean[]  random = {};
 
+        final TripPlanner[] tp = {new TripPlanner()};
 
 
-        JLabel finalItinerary = new JLabel(""); //make it re-writeable
+
+        JTextArea finalItinerary = new JTextArea("");//make it re-writeable
 
         finalItinerary.setVisible(false);
+        finalItinerary.setLineWrap(true);
+        finalItinerary.setWrapStyleWord(true);
+        finalItinerary.setOpaque(false);
+        finalItinerary.setColumns(40);
+        finalItinerary.setRows(3);
+
+        //Create and add listener to reset
+        JButton resetButton = new JButton("Reset");
+        resetButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae)
+            {
+                dispose();
+                new AutocompleteGUI("uscities_final.csv",496).setVisible(true);
+            }
+        });
 
         //Create and add listener to Confirm time availability
         JButton timeButton = new JButton("Confirm time");
@@ -130,17 +131,16 @@ public class AutocompleteGUI
             public void actionPerformed(ActionEvent ae)
             {
                 time[0] = Integer.parseInt(timeAvail.getText());
-                System.out.print(time[0]);
+                tp[0].buildMap("uscities_final.csv",time[0]); //change to real threshold later
             }
         });
 
-        //Create and add listener to Confirm time availability
+        //Create and add listener to Confirm drive availability
         JButton hoursButton = new JButton("Confirm hours");
         hoursButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae)
             {
                 hours[0] = Integer.parseInt(hoursDrive.getText());
-                System.out.print(hours[0]);
             }
         });
 
@@ -149,7 +149,7 @@ public class AutocompleteGUI
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae)
             {
-                searchOnline(ap.getSelectedText());
+                //searchOnline(ap.getSelectedText());
                 source[0] = ap.getSelectedText();
             }
         });
@@ -159,10 +159,11 @@ public class AutocompleteGUI
         searchButton2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae)
             {
-                searchOnline(ap2.getSelectedText());
-                finalItinerary.setText("Itinerary"); //instead of new text it should be a function that prints path!
-                finalItinerary.setVisible(true);
+                //searchOnline(ap2.getSelectedText());
                 destination[0] = ap2.getSelectedText();
+                List<Integer> sp = tp[0].shortestPath(source[0],destination[0]);
+                finalItinerary.setText(tp[0].printCities(sp)); //instead of new text it should be a function that prints path!
+                finalItinerary.setVisible(true);
             } //this one should trigger text with itinerary
         });
 
@@ -258,6 +259,10 @@ public class AutocompleteGUI
                                         .addComponent(searchButton2,
                                                 GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.DEFAULT_SIZE)
+                                        .addComponent(resetButton,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
                                                 GroupLayout.DEFAULT_SIZE)));
 
                 //.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
@@ -269,7 +274,8 @@ public class AutocompleteGUI
                 layout.createSequentialGroup().addGroup( //first line
                                 layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
                                         .addGroup(
-                                                layout.createSequentialGroup().addComponent(randomCheck)))
+                                                layout.createSequentialGroup().addComponent(randomCheck)
+                                                        .addComponent(resetButton)))
                         .addGroup( //first line
                                 layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
                                         .addGroup(
@@ -466,7 +472,7 @@ public class AutocompleteGUI
                         searchText.setText(selection);
                         getSuggestions(selection);
                     }
-                    searchOnline(searchText.getText());
+                   // searchOnline(searchText.getText());
                 }
             };
             Action moveSelectionUp = new AbstractAction() {
@@ -596,7 +602,7 @@ public class AutocompleteGUI
                             searchText.setText(selection);
                             String text = searchText.getText();
                             getSuggestions(text);
-                            searchOnline(searchText.getText());
+                           // searchOnline(searchText.getText());
                         }
                     }
                 }
@@ -636,7 +642,7 @@ public class AutocompleteGUI
                             searchText.setText(selection);
                             String text = searchText.getText();
                             getSuggestions(text);
-                            searchOnline(searchText.getText());
+                           // searchOnline(searchText.getText());
                         }
                     }
                 }
@@ -694,7 +700,7 @@ public class AutocompleteGUI
                     String selection = getSelectedText();
                     searchText.setText(selection);
                     getSuggestions(selection);
-                    searchOnline(searchText.getText());
+                   // searchOnline(searchText.getText());
                 }
             });
 

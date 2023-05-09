@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public interface IAutocomplete
      *         BufferedReader useful in this situation as it will allow you to
      *         read a file one line at a time.
      */
-    public Node buildTrie(String filename, int k);
+    public NodeA buildTrie(String filename, int k);
 
 
     /**
@@ -35,7 +37,7 @@ public interface IAutocomplete
      * @return the root of the subTrie corresponding to the last character of
      *         the prefix. If the prefix is not represented in the trie, return null.
      */
-    public Node getSubTrie(String prefix);
+    public NodeA getSubTrie(String prefix);
 
 
     /**

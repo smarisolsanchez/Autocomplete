@@ -1,5 +1,6 @@
 import org.junit.Assert;
 import org.junit.Test;
+import org.w3c.dom.Node;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -16,16 +17,16 @@ public class AutocompleteCitiesTest {
         ia.addWord("New York", 18972871);
 
         String word = "New York";
-        Node n = new Node();
+        NodeA n = new NodeA();
 
-        Node curr = n;
+        NodeA curr = n;
 
         for (char c : word.toCharArray()) {
 
             if (Math.abs(c - 'a') < 26 && Character.isLetter(c)) {
-                Node[] children = curr.getReferences();
+                NodeA[] children = curr.getReferences();
                 if (children[Math.abs((c - 'a'))] == null) {
-                    Node m = new Node();
+                    NodeA m = new NodeA();
                     m.setPrefixes(1);
                     children[Math.abs((c - 'a'))] = m;
                 } else {

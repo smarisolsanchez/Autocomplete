@@ -1,75 +1,72 @@
-
 /**
  * @author Harry Smith
  */
 
 public class Node {
-    private Term term;
-    private int words;
-    private int prefixes;
-    private Node[] references;
+
+    private int population;
+    private String city;
+    private String state;
+    private String state_id;
+    private double lat;
+    private double lng;
+    private int index;
+
+    private double[] distances;
 
     /**
      * Initialize a Node with an empty string and 0 weight; useful for
      * writing tests.
      */
     public Node() {
-        this.term = null;
-        this.words = 0;
-        this.prefixes = 0;
-        this.references = new Node[66];
+
     }
+
     /**
      * Initialize a Node with the given query string and weight.
      * @throws IllegalArgumentException if query is null or if weight is negative.
      */
-    public Node(String query, long weight) {
-
-        if ((query == null) || (weight < 0)) {
-
-            throw new IllegalArgumentException();
+    public Node(String city, String state, String state_id, double lat, double lng, int pop, int index) {
+        if (pop < 0 || city == null || Math.abs(lat) > 85.05115 || Math.abs(lng) > 180) {
+            throw new IllegalArgumentException("bad construction");
         }
-
-        this.term = new Term(query,weight);
-
-        this.words = 0;
-
-        this.prefixes = 0;
-
-        this.references = new Node[66];
-
-
+        population = pop;
+        this.city = city;
+        this.state = state;
+        this.state_id = state_id;
+        this.lat = lat;
+        this.lng = lng;
+        this.index = index;
     }
 
-    public Term getTerm() {
-        return term;
+    public String getCity() {
+        return city;
     }
 
-    public void setTerm(Term term) {
-        this.term = term;
+    public String getState() {
+        return state;
     }
 
-    public int getWords() {
-        return words;
+    public int getPopulation() {
+        return population;
+    }
+    public double[] getDistances() {
+        return distances;
     }
 
-    public void setWords(int words) {
-        this.words = words;
+    public double getLat() {
+        return lat;
     }
 
-    public int getPrefixes() {
-        return prefixes;
+    public double getLng() {
+        return lng;
     }
 
-    public void setPrefixes(int prefixes) {
-        this.prefixes = prefixes;
+    public int getIndex() {
+        return index;
     }
 
-    public Node[] getReferences() {
-        return references;
-    }
-
-    public void setReferences(Node[] references) {
-        this.references = references;
+    public void setReferences(double[] distances) {
+        this.distances = distances;
     }
 }

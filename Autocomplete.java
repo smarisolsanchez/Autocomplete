@@ -1,3 +1,5 @@
+import org.w3c.dom.Node;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -5,12 +7,12 @@ import java.util.List;
 
 public class Autocomplete implements IAutocomplete {
 
-    Node root;
+    NodeA root;
 
     int k;
 
     public Autocomplete() {
-        root = new Node("",1);
+        root = new NodeA("",1);
         int k = 0;
     }
 
@@ -28,7 +30,7 @@ public class Autocomplete implements IAutocomplete {
 
     @Override
     public void addWord(String word, long weight) {
-        Node curr = this.root;
+        NodeA curr = this.root;
 
 
 
@@ -42,9 +44,9 @@ public class Autocomplete implements IAutocomplete {
             //if (Math.abs(c - 'a') < 26) {
             for (char c : word.toCharArray()) {
 
-                    Node[] children = curr.getReferences();
+                NodeA[] children = curr.getReferences();
                     if (children[Math.abs((c - 'a'))] == null) {
-                        Node n = new Node();
+                        NodeA n = new NodeA();
                         n.setPrefixes(1);
 
                         children[Math.abs((c - 'a'))] = n;
@@ -124,7 +126,7 @@ public class Autocomplete implements IAutocomplete {
 
 
     @Override
-    public Node buildTrie(String filename, int k) {
+    public NodeA buildTrie(String filename, int k) {
 
         String line = "";
         String splitBy = ",";
@@ -154,9 +156,9 @@ public class Autocomplete implements IAutocomplete {
     }
 
     @Override
-    public Node getSubTrie(String prefix) {
+    public NodeA getSubTrie(String prefix) {
 
-        Node curr = this.root;
+        NodeA curr = this.root;
 
         for (char c : prefix.toCharArray()) {
             if (Math.abs(c - 'a') < 66) {
@@ -175,7 +177,7 @@ public class Autocomplete implements IAutocomplete {
     @Override
     public int countPrefixes(String prefix) {
 
-        Node curr = this.root;
+        NodeA curr = this.root;
 
         if (isWord(prefix)) {
 
@@ -194,10 +196,10 @@ public class Autocomplete implements IAutocomplete {
         return curr.getPrefixes();
     }
 
-    public void suggestionHelper(Node curr, List<ITerm> list) {
+    public void suggestionHelper(NodeA curr, List<ITerm> list) {
 
         for (int i = 0; i < 66; i++) {
-            Node n = curr.getReferences()[i];
+            NodeA n = curr.getReferences()[i];
             if ((n != null) && (n.getWords() != 0)) {
                 if (n.getTerm() != null) {
                     Term t = n.getTerm();
@@ -220,7 +222,7 @@ public class Autocomplete implements IAutocomplete {
     public List<ITerm> getSuggestions(String prefix) {
         List<ITerm> toReturn = new ArrayList<>();
         //return copies
-        Node curr = this.root;
+        NodeA curr = this.root;
 
 
 
