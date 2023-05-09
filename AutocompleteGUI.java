@@ -80,7 +80,7 @@ public class AutocompleteGUI
     {
         this.k = k;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setTitle("Autocomplete Me");
+        setTitle("Autocomplete");
         setPreferredSize(new Dimension(DEF_WIDTH, DEF_HEIGHT));
         pack();
         setLocationRelativeTo(null);
@@ -92,15 +92,33 @@ public class AutocompleteGUI
 
         final AutocompletePanel ap = new AutocompletePanel(filename);
 
-        JLabel textLabel = new JLabel("Search query:");
+        final AutocompletePanel ap2 = new AutocompletePanel(filename);
+
+        JLabel textLabel = new JLabel("From:");
+
+        JLabel textLabel2 = new JLabel("To:");
+
+        JLabel finalItinerary = new JLabel("Los Angeles -> New York");
+
+        finalItinerary.setVisible(false);
 
         // Create and add a listener to the Search button
-        JButton searchButton = new JButton("Search Google");
+        JButton searchButton = new JButton("Confirm");
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae)
             {
                 searchOnline(ap.getSelectedText());
             }
+        });
+
+        //Second one
+        JButton searchButton2 = new JButton("Confirm 2");
+        searchButton2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae)
+            {
+                searchOnline(ap2.getSelectedText());
+                finalItinerary.setVisible(true);
+            } //this one should trigger text with itinerary
         });
 
         // Create and add a listener to a "Show weights" checkbox
@@ -114,38 +132,80 @@ public class AutocompleteGUI
             }
         });
 
+        //Second checkbox
+        JCheckBox checkbox2 =
+                new JCheckBox("Show weights", null, displayWeights);
+        checkbox2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae)
+            {
+                displayWeights = !displayWeights;
+                ap2.update();
+            }
+        });
+
         // Define the layout of the window
-        layout.setHorizontalGroup(
-            layout.createSequentialGroup().addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(
-                        textLabel,
-                        GroupLayout.PREFERRED_SIZE,
-                        GroupLayout.DEFAULT_SIZE,
-                        GroupLayout.PREFERRED_SIZE)
-                    .addComponent(
-                        checkbox,
-                        GroupLayout.PREFERRED_SIZE,
-                        GroupLayout.DEFAULT_SIZE,
-                        GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(
-                    LayoutStyle.ComponentPlacement.RELATED,
-                    GroupLayout.DEFAULT_SIZE,
-                    GroupLayout.DEFAULT_SIZE)
-                .addComponent(ap, 0, GroupLayout.DEFAULT_SIZE, DEF_WIDTH)
-                .addComponent(
-                    searchButton,
-                    GroupLayout.PREFERRED_SIZE,
-                    GroupLayout.DEFAULT_SIZE,
-                    GroupLayout.DEFAULT_SIZE));
+        layout.setHorizontalGroup(layout.createSequentialGroup().
+                addGroup(
+                        layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(
+                                textLabel,
+                                GroupLayout.PREFERRED_SIZE,
+                                GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                        .addComponent(
+                                checkbox,
+                                GroupLayout.PREFERRED_SIZE,
+                                GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                                .addComponent(finalItinerary, GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                        .addComponent(
+                                textLabel2,
+                                GroupLayout.PREFERRED_SIZE,
+                                GroupLayout.DEFAULT_SIZE,
+                                GroupLayout.PREFERRED_SIZE)
+                                .addComponent(
+                                        checkbox2,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                )
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addComponent(ap, 0, GroupLayout.DEFAULT_SIZE,DEF_WIDTH)
+                                .addComponent(ap2, 0, GroupLayout.DEFAULT_SIZE,DEF_WIDTH)
+                                )
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(searchButton,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.DEFAULT_SIZE)
+                                        .addComponent(searchButton2,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.DEFAULT_SIZE)));
+
+                //.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                //.addComponent(ap, 0, GroupLayout.DEFAULT_SIZE, DEF_WIDTH)
+                //.addComponent(searchButton,GroupLayout.PREFERRED_SIZE,GroupLayout.DEFAULT_SIZE,GroupLayout.DEFAULT_SIZE));
+
 
         layout.setVerticalGroup(
-            layout.createSequentialGroup().addGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(
-                        layout.createSequentialGroup().addComponent(textLabel)
-                            .addComponent(checkbox))
-                    .addComponent(ap).addComponent(searchButton)));
+                layout.createSequentialGroup().addGroup( //first line
+                                layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
+                                        .addGroup(
+                                                layout.createSequentialGroup().addComponent(textLabel)
+                                                        .addComponent(checkbox))
+                                        .addComponent(ap).addComponent(searchButton))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addGroup(layout.createSequentialGroup().addComponent(textLabel2) //second group
+                                .addComponent(checkbox2)).addComponent(ap2).addComponent(searchButton2))
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addGroup(layout.createSequentialGroup()
+                                .addComponent(finalItinerary)))
+
+        );
+
+
+
     }
 
 
