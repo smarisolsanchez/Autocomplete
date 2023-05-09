@@ -17,7 +17,7 @@ public class Node {
         this.term = null;
         this.words = 0;
         this.prefixes = 0;
-        this.references = new Node[26];
+        this.references = new Node[66];
     }
     /**
      * Initialize a Node with the given query string and weight.
@@ -36,7 +36,7 @@ public class Node {
 
         this.prefixes = 0;
 
-        this.references = new Node[26];
+        this.references = new Node[66];
 
 
     }

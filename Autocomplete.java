@@ -15,11 +15,14 @@ public class Autocomplete implements IAutocomplete {
     }
 
     public boolean isWord(String w)  {
+        /*
         for (char c : w.toCharArray()) {
             if ((!(Character.isLetter(c))) && (!(Character.isWhitespace(c)))) {
                 return false;
             }
         }
+
+         */
         return true;
     }
 
@@ -29,15 +32,16 @@ public class Autocomplete implements IAutocomplete {
 
 
 
-        word = word.toLowerCase();
+
 
         if (isWord(word)) {
 
             int now = curr.getPrefixes();
             curr.setPrefixes(now + 1);
-
+            //&& Character.isLetter(c)
+            //if (Math.abs(c - 'a') < 26) {
             for (char c : word.toCharArray()) {
-                if (Math.abs(c - 'a') < 26 && Character.isLetter(c)) {
+
                     Node[] children = curr.getReferences();
                     if (children[Math.abs((c - 'a'))] == null) {
                         Node n = new Node();
@@ -50,7 +54,7 @@ public class Autocomplete implements IAutocomplete {
 
                     }
                     curr = children[Math.abs((c - 'a'))];
-                }
+
             }
 
             curr.setTerm(new Term(word, weight));
@@ -136,7 +140,7 @@ public class Autocomplete implements IAutocomplete {
             {
                 String[] city = line.split(splitBy);    // use comma as separator
                 //System.out.println("CityInfo [City Name=" + city[0] + ", State ID=" + city[1] + ", State Name=" + city[2] + ", lat=" + city[3] + ", lng= " + city[4] + ", Population= " + city[5] + "]");
-                String s = city[0];
+                String s = city[0] + " " + city[1];
                 Integer in = Integer.parseInt(city[5]);
                 addWord(s,in);
                 i += 1;
@@ -155,7 +159,7 @@ public class Autocomplete implements IAutocomplete {
         Node curr = this.root;
 
         for (char c : prefix.toCharArray()) {
-            if (Math.abs(c - 'a') < 26) {
+            if (Math.abs(c - 'a') < 66) {
                 if ((curr.getReferences()[Math.abs(c - 'a')]) == null) {
                     return null;
                 } else {
@@ -192,7 +196,7 @@ public class Autocomplete implements IAutocomplete {
 
     public void suggestionHelper(Node curr, List<ITerm> list) {
 
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < 66; i++) {
             Node n = curr.getReferences()[i];
             if ((n != null) && (n.getWords() != 0)) {
                 if (n.getTerm() != null) {

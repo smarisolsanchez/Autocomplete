@@ -64,6 +64,8 @@ public class AutocompleteGUI
     // Indicates whether to display weights next to query matches
     private boolean             displayWeights   = true;
 
+    private boolean             isRandom   = false;
+
     //List of all the matching terms
     private List<ITerm>     matches;                
 
@@ -94,19 +96,53 @@ public class AutocompleteGUI
 
         final AutocompletePanel ap2 = new AutocompletePanel(filename);
 
+        JTextField timeAvail = new JTextField();
+
+        JTextField hoursDrive = new JTextField();
+
+        JLabel timeAvailable = new JLabel("Time Availability (days)");
+
+        JLabel hoursDay = new JLabel("Hours per day driving");
+
         JLabel textLabel = new JLabel("From:");
 
         JLabel textLabel2 = new JLabel("To:");
 
+        final int[] time = {1};
+
+        final int[] hours = {1};
+
         final String[] source = {""};
 
         final String[] destination = {""};
+
+        final boolean[]  random = {};
 
 
 
         JLabel finalItinerary = new JLabel(""); //make it re-writeable
 
         finalItinerary.setVisible(false);
+
+        //Create and add listener to Confirm time availability
+        JButton timeButton = new JButton("Confirm time");
+        timeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae)
+            {
+                time[0] = Integer.parseInt(timeAvail.getText());
+                System.out.print(time[0]);
+            }
+        });
+
+        //Create and add listener to Confirm time availability
+        JButton hoursButton = new JButton("Confirm hours");
+        hoursButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae)
+            {
+                hours[0] = Integer.parseInt(hoursDrive.getText());
+                System.out.print(hours[0]);
+            }
+        });
 
         // Create and add a listener to the Search button
         JButton searchButton = new JButton("Confirm from");
@@ -128,6 +164,16 @@ public class AutocompleteGUI
                 finalItinerary.setVisible(true);
                 destination[0] = ap2.getSelectedText();
             } //this one should trigger text with itinerary
+        });
+
+        // Create and add a listener to a "Random" checkbox
+        JCheckBox randomCheck =
+                new JCheckBox("Random Itinerary", null, isRandom);
+        randomCheck.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ae)
+            {
+                isRandom = !isRandom;
+            }
         });
 
         // Create and add a listener to a "Show weights" checkbox
@@ -156,6 +202,10 @@ public class AutocompleteGUI
         layout.setHorizontalGroup(layout.createSequentialGroup().
                 addGroup(
                         layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addComponent(randomCheck,
+                                        GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
                         .addComponent(
                                 textLabel,
                                 GroupLayout.PREFERRED_SIZE,
@@ -178,12 +228,29 @@ public class AutocompleteGUI
                                         GroupLayout.PREFERRED_SIZE,
                                         GroupLayout.DEFAULT_SIZE,
                                         GroupLayout.PREFERRED_SIZE)
+                                .addComponent(timeAvailable, GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
+                                .addComponent(hoursDay,GroupLayout.PREFERRED_SIZE,
+                                        GroupLayout.DEFAULT_SIZE,
+                                        GroupLayout.PREFERRED_SIZE)
                                 )
+
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                .addComponent(timeAvail, GroupLayout.Alignment.TRAILING)
+                                        .addComponent(hoursDrive, GroupLayout.Alignment.TRAILING)
                                 .addComponent(ap, 0, GroupLayout.DEFAULT_SIZE,DEF_WIDTH)
                                 .addComponent(ap2, 0, GroupLayout.DEFAULT_SIZE,DEF_WIDTH)
                                 )
                                 .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                                        .addComponent(timeButton,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.DEFAULT_SIZE)
+                                        .addComponent(hoursButton,
+                                                GroupLayout.PREFERRED_SIZE,
+                                                GroupLayout.DEFAULT_SIZE,
+                                                GroupLayout.DEFAULT_SIZE)
                                         .addComponent(searchButton,
                                                 GroupLayout.PREFERRED_SIZE,
                                                 GroupLayout.DEFAULT_SIZE,
@@ -200,6 +267,20 @@ public class AutocompleteGUI
 
         layout.setVerticalGroup(
                 layout.createSequentialGroup().addGroup( //first line
+                                layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
+                                        .addGroup(
+                                                layout.createSequentialGroup().addComponent(randomCheck)))
+                        .addGroup( //first line
+                                layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
+                                        .addGroup(
+                                                layout.createSequentialGroup().addComponent(timeAvailable))
+                                        .addComponent(timeAvail).addComponent(timeButton))
+                        .addGroup( //first line
+                                layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
+                                        .addGroup(
+                                                layout.createSequentialGroup().addComponent(hoursDay))
+                                        .addComponent(hoursDrive).addComponent(hoursButton))
+                        .addGroup( //first line
                                 layout.createParallelGroup(GroupLayout.Alignment.BASELINE) //originally Leading
                                         .addGroup(
                                                 layout.createSequentialGroup().addComponent(textLabel)
@@ -863,7 +944,7 @@ public class AutocompleteGUI
         final String filename = "uscities_final.csv";
 
         //final int k = Integer.parseInt(args[1]);
-        final int k = 50;
+        final int k = 496;
         SwingUtilities.invokeLater(new Runnable() {
             public void run()
             {
