@@ -89,16 +89,11 @@ public class TripPlanner implements ITravelPlanner {
         String splitBy = ",";
         try {
 
-
-
             BufferedReader br = new BufferedReader(new FileReader(filePath));
 
             String num = br.readLine();
 
             int i = 0;
-
-
-
 
             // Create an object of filereader
             // class with CSV file as a parameter.
@@ -284,11 +279,11 @@ public class TripPlanner implements ITravelPlanner {
 
         for (int i = 0; i < sp.size(); i++) {
             if (i == sp.size() - 1) {
-                line += getCity(sp.get(i)).getCity();
+                line += getCity(sp.get(i)).getCity() + " " + getCity(sp.get(i)).getState();
             }
 
             if (i != sp.size() - 1) {
-                line += getCity(sp.get(i)).getCity() + " -> ";
+                line += getCity(sp.get(i)).getCity() + " " + getCity(sp.get(i)).getState() + " -> ";
             }
         }
         return line;

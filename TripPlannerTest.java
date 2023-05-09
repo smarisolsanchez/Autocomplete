@@ -33,8 +33,11 @@ public class TripPlannerTest {
     @Test
     public void testPrint() {
         TripPlanner tp = new TripPlanner();
-        tp.buildMap("uscities_final.csv",500);
-        List<Integer> sp = tp.shortestPath("Boston MA","Atlanta GA");
+        tp.buildMap("uscities_final.csv",600);
+        List<Integer> sp = tp.shortestPath("New York NY","Seattle WA");
+
+
+
 
         System.out.print(tp.printCities(sp));
     }
