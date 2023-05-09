@@ -98,26 +98,35 @@ public class AutocompleteGUI
 
         JLabel textLabel2 = new JLabel("To:");
 
-        JLabel finalItinerary = new JLabel("Los Angeles -> New York");
+        final String[] source = {""};
+
+        final String[] destination = {""};
+
+
+
+        JLabel finalItinerary = new JLabel(""); //make it re-writeable
 
         finalItinerary.setVisible(false);
 
         // Create and add a listener to the Search button
-        JButton searchButton = new JButton("Confirm");
+        JButton searchButton = new JButton("Confirm from");
         searchButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae)
             {
                 searchOnline(ap.getSelectedText());
+                source[0] = ap.getSelectedText();
             }
         });
 
         //Second one
-        JButton searchButton2 = new JButton("Confirm 2");
+        JButton searchButton2 = new JButton("Confirm to");
         searchButton2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ae)
             {
                 searchOnline(ap2.getSelectedText());
+                finalItinerary.setText("Itinerary"); //instead of new text it should be a function that prints path!
                 finalItinerary.setVisible(true);
+                destination[0] = ap2.getSelectedText();
             } //this one should trigger text with itinerary
         });
 
