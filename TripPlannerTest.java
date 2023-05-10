@@ -42,5 +42,37 @@ public class TripPlannerTest {
         System.out.print(tp.printCities(sp));
     }
 
+    @Test
+    public void testPopularity() {
+        TripPlanner tp = new TripPlanner();
+        List<Integer> l = tp.planRandom("Lorain OH","Atlanta GA",5,4, "uscities_final.csv");
+        System.out.print(tp.printCities(l));
+
+    }
+
+    @Test
+    public void testPopularity1() {
+        TripPlanner tp = new TripPlanner();
+        List<Integer> l = tp.planRandom("New York NY","Los Angeles CA",5,2, "uscities_final.csv");
+        System.out.print(tp.printCities(l));
+
+    }
+
+
+    @Test
+    public void testPlanTrip() {
+        TripPlanner tp = new TripPlanner();
+        List<Integer> l = tp.planTrip("Philadelphia PA","New York NY",5,2);
+        System.out.print(tp.printCities(l));
+
+    }
+
+
+
+    @Test
+    public void distanceSquare() {
+        TripPlanner tp = new TripPlanner();
+        System.out.println(tp.getDictionary().get("New York NY"));
+    }
 
 }
